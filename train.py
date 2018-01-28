@@ -36,4 +36,4 @@ with tf.Session() as sess:
                 loss = sess.run(model.loss, feed_dict=feed_dict)
                 print 'batches %d, loss %g' % (b, loss)
             sess.run(model.train_op, feed_dict=feed_dict)
-        saver.save(sess, 'output/%s/model.tfmodel' % args.mode, global_step=e)
+        saver.save(sess, '/output/model_%s.tfmodel' % args.mode, global_step=e)
