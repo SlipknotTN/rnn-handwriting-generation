@@ -3,6 +3,7 @@
 .idea
 .git
 .eggs
+download
 eggs
 lib
 lib64
