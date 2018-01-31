@@ -31,6 +31,8 @@ parser.add_argument('--str', type=str, default="Hello world",
                     help='String for synthesis')
 parser.add_argument('--epoch_model', type=int, default=50,
                     help='Epoch model to load')
+parser.add_argument('--output_file_name', type=str, default="sample.normal.svg",
+                    help="Output file name")
 # parser.add_argument('--decay_rate', type=float, default=0.95,
 #                      help='decay rate for rmsprop')
 # parser.add_argument('--keep_prob', type=float, default=0.8,

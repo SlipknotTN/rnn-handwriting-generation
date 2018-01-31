@@ -1,5 +1,4 @@
 import tensorflow as tf
-import numpy as np
 import model as m
 from utils import *
 from config import *
@@ -12,10 +11,17 @@ args.T = 1
 args.batch_size = 1
 args.action = 'sample'
 
+# Save new checkpoint to choose the model epoch
+newCheckpointContent = "model_checkpoint_path: "
+newCheckpointContent += "\"" + os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                            'save_%s' % args.mode,
+                                            "model_synthesis.tfmodel-" + str(args.epoch_model)) + "\""
+with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'save_%s' % args.mode, "checkpoint"), 'w') as checkpointFile:
+    checkpointFile.write(newCheckpointContent)
+
 model = m.Model(args)
 saver = tf.train.Saver()
-# TODO: Change the checkpoint to load the desired model epoch
-ckpt = tf.train.get_checkpoint_state('save_%s_%s' % args.mode)
+ckpt = tf.train.get_checkpoint_state('save_%s' % args.mode)
 
 with tf.Session() as sess:
     saver.restore(sess, ckpt.model_checkpoint_path)
@@ -23,7 +29,6 @@ with tf.Session() as sess:
         strokes = model.sample(sess, 800)
     if args.mode == 'synthesis':
         str_vec = vectorization(args.str, data_loader.char_to_indices)
-        # TODO: Disable matplotlib
-        strokes = model.sample(sess, len(args.str) * args.points_per_char, str=str_vec)
+        strokes = model.sample(sess, len(args.str) * args.points_per_char, str=str_vec, verbose=False)
     # print strokes
-    draw_strokes_random_color(strokes, factor=0.1, svg_filename='sample' + '.normal.svg')
+    draw_strokes_random_color(strokes, factor=0.1, svg_filename=os.path.join("export", args.output_file_name))
