@@ -108,7 +108,7 @@ class Model():
         self.optimizer = tf.train.AdamOptimizer(learning_rate=args.learning_rate)
         self.train_op = self.optimizer.minimize(self.loss)
 
-    def sample(self, sess, length, str=None):
+    def sample(self, sess, length, str=None, verbose=False):
         x = np.zeros([1, 1, 3], np.float32)
         x[0, 0, 2] = 1
         strokes = np.zeros([length, 3], dtype=np.float32)
@@ -165,7 +165,7 @@ class Model():
             else:
                 x[0, 0, 2] = 0
             strokes[i + 1, :] = x[0, 0, :]
-        if self.args.mode == 'synthesis':
+        if self.args.mode == 'synthesis' and verbose is True:
             # print kappa_list
             import matplotlib.pyplot as plt
             plt.imshow(kappa_list, interpolation='nearest')
